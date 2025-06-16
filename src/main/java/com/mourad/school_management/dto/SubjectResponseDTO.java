@@ -1,6 +1,5 @@
 package com.mourad.school_management.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,14 +11,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentResponseDTO {
+public class SubjectResponseDTO {
     private Long id;
-    private String matricule;
-    private String email;
-    private String firstname;
-    private String lastname;
-    private String classeName;
-    private String parentName;
+    private String name;
+    private Double coefficient;
+    private List<TeacherDTO> teachers;
+    private List<ScheduleDTO> schedules;
     private List<NoteDTO> notes;
-    private List<AbsenceDTO> absences;
 }

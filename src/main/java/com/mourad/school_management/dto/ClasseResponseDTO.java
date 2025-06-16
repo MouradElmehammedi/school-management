@@ -1,5 +1,6 @@
 package com.mourad.school_management.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubjectDTO {
+public class ClasseResponseDTO {
     private Long id;
     private String name;
-    private Double coefficient;
-    private List<Long> teacherIds;
+    private String level;
+    private TeacherDTO mainTeacher;
+    private List<StudentDTO> students;
+    private List<ScheduleDTO> schedules;
 }
