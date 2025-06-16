@@ -11,9 +11,13 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AbsenceDTO {
+public class AbsenceResponseDTO {
     private Long id;
-    private Long studentId;
+    private String studentName;
+    private String studentMatricule;
+    private String classeName;
     private LocalDateTime date;
     private String reason;
+    private String createdBy;
+    private LocalDateTime createdAt;
 }

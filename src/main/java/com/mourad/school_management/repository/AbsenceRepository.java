@@ -11,4 +11,5 @@ import java.util.List;
 public interface AbsenceRepository extends JpaRepository<Absence, Long> {
     List<Absence> findByStudentId(Long studentId);
     List<Absence> findByStudentIdAndDateBetween(Long studentId, LocalDateTime startDate, LocalDateTime endDate);
+    List<Absence> findByStudentClasseId(Long classId);
 }

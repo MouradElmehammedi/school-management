@@ -28,6 +28,8 @@ public class Note {
 
     private Double value;
 
+    private String comment;
+
     @Enumerated(EnumType.STRING)
     private Term term;
 }

@@ -8,15 +8,16 @@ import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleDTO {
+public class ScheduleResponseDTO {
     private Long id;
-    private Long classeId;
-    private Long subjectId;
-    private Long teacherId;
+    private String classeName;
+    private String subjectName;
+    private String teacherName;
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;

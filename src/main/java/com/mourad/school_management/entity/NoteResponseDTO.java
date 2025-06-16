@@ -1,7 +1,5 @@
-package com.mourad.school_management.dto;
+package com.mourad.school_management.entity;
 
-
-import com.mourad.school_management.entity.Term;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NoteDTO {
+public class NoteResponseDTO {
     private Long id;
-    private Long studentId;
-    private Long subjectId;
+    private String studentName;
+    private String studentMatricule;
+    private String subjectName;
     private Double value;
     private Term term;
     private String comment;
+    private Double coefficient;
 }
