@@ -2,6 +2,7 @@ package com.mourad.school_management.service;
 
 
 import com.mourad.school_management.dto.NoteDTO;
+import com.mourad.school_management.dto.NoteResponseDTO;
 import com.mourad.school_management.entity.*;
 import com.mourad.school_management.repository.NoteRepository;
 import com.mourad.school_management.repository.StudentRepository;

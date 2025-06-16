@@ -2,7 +2,7 @@ package com.mourad.school_management.controller;
 
 
 import com.mourad.school_management.dto.NoteDTO;
-import com.mourad.school_management.entity.NoteResponseDTO;
+import com.mourad.school_management.dto.NoteResponseDTO;
 import com.mourad.school_management.entity.Term;
 import com.mourad.school_management.service.NoteService;
 import jakarta.validation.Valid;
