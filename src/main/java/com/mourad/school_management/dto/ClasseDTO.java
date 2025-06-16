@@ -13,4 +13,5 @@ public class ClasseDTO {
     private Long id;
     private String name;
     private String level;
+    private Long mainTeacherId;
 }

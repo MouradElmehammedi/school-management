@@ -7,31 +7,42 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "classes")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "classes")
 public class Classe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false)
     private String level;
 
-    @OneToMany(mappedBy = "classe")
-    private List<Student> students;
+    @Column(nullable = false)
+    private Integer capacity;
 
     @ManyToOne
-    @JoinColumn(name = "main_teacher_id")
-    private Teacher mainTeacher;
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
 
     @OneToMany(mappedBy = "classe")
-    private List<Schedule> schedules;
+    private Set<Student> students = new HashSet<>();
+
+    @OneToMany(mappedBy = "classe")
+    private Set<Note> notes = new HashSet<>();
+
+    @OneToMany(mappedBy = "classe")
+    private Set<Absence> absences = new HashSet<>();
+
+    @OneToMany(mappedBy = "classe")
+    private Set<Schedule> schedules = new HashSet<>();
 }

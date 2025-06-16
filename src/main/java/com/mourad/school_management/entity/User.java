@@ -28,6 +28,8 @@ public class User {
 
     private String avatar;
 
+    private boolean enabled;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 }

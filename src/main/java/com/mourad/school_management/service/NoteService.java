@@ -42,7 +42,6 @@ public class NoteService {
                 .student(student)
                 .subject(subject)
                 .value(noteDTO.getValue())
-                .term(noteDTO.getTerm())
                 .comment(noteDTO.getComment())
                 .build();
 
@@ -85,7 +84,6 @@ public class NoteService {
 
         // Mettre à jour la note
         note.setValue(noteDTO.getValue());
-        note.setTerm(noteDTO.getTerm());
         note.setComment(noteDTO.getComment());
 
         note = noteRepository.save(note);
@@ -123,7 +121,6 @@ public class NoteService {
                 .studentMatricule(note.getStudent().getMatricule())
                 .subjectName(note.getSubject().getName())
                 .value(note.getValue())
-                .term(note.getTerm())
                 .comment(note.getComment())
                 .coefficient(note.getSubject().getCoefficient())
                 .build();

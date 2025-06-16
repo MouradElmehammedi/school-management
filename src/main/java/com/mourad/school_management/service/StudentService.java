@@ -1,6 +1,8 @@
 package com.mourad.school_management.service;
 
 
+import com.mourad.school_management.dto.AbsenceDTO;
+import com.mourad.school_management.dto.NoteDTO;
 import com.mourad.school_management.dto.StudentDTO;
 import com.mourad.school_management.dto.StudentResponseDTO;
 import com.mourad.school_management.entity.*;
@@ -126,8 +128,6 @@ public class StudentService {
                         .map(note -> NoteDTO.builder()
                                 .id(note.getId())
                                 .value(note.getValue())
-                                .subjectName(note.getSubject().getName())
-                                .term(note.getTerm())
                                 .build())
                         .collect(Collectors.toList()))
                 .absences(student.getAbsences().stream()

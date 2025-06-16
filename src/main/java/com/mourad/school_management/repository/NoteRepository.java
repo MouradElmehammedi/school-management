@@ -13,4 +13,8 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     List<Note> findByStudentIdAndTerm(Long studentId, Term term);
     List<Note> findBySubjectId(Long subjectId);
     List<Note> findByStudentIdAndSubjectId(Long studentId, Long subjectId);
+
+    List<Note> findByTeacherId(Long teacherId);
+    List<Note> findByClasseId(Long classeId);
+    List<Note> findByClasseIdAndTerm(Long classeId, Term term);
 }

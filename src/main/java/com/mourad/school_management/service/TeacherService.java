@@ -1,10 +1,10 @@
 package com.mourad.school_management.service;
 
 
+import com.mourad.school_management.dto.ScheduleDTO;
 import com.mourad.school_management.dto.TeacherDTO;
 import com.mourad.school_management.dto.TeacherResponseDTO;
 import com.mourad.school_management.entity.Role;
-import com.mourad.school_management.entity.Subject;
 import com.mourad.school_management.entity.Teacher;
 import com.mourad.school_management.entity.User;
 import com.mourad.school_management.repository.ClasseRepository;
@@ -38,16 +38,9 @@ public class TeacherService {
                 .build();
         user = userRepository.save(user);
 
-        // Récupérer les matières
-        List<Subject> subjects = teacherDTO.getSubjectIds().stream()
-                .map(subjectId -> subjectRepository.findById(subjectId)
-                        .orElseThrow(() -> new EntityNotFoundException("Subject not found with id: " + subjectId)))
-                .collect(Collectors.toList());
-
         // Créer le professeur
         Teacher teacher = Teacher.builder()
                 .user(user)
-                .subjects(subjects)
                 .build();
 
         teacher = teacherRepository.save(teacher);
@@ -83,12 +76,8 @@ public class TeacherService {
         user.setLastname(teacherDTO.getLastname());
         userRepository.save(user);
 
-        // Mettre à jour les matières
-        List<Subject> subjects = teacherDTO.getSubjectIds().stream()
-                .map(subjectId -> subjectRepository.findById(subjectId)
-                        .orElseThrow(() -> new EntityNotFoundException("Subject not found with id: " + subjectId)))
-                .collect(Collectors.toList());
-        teacher.setSubjects(subjects);
+
+
 
         teacher = teacherRepository.save(teacher);
         return mapToResponseDTO(teacher);
@@ -107,30 +96,16 @@ public class TeacherService {
                 .email(teacher.getUser().getEmail())
                 .firstname(teacher.getUser().getFirstname())
                 .lastname(teacher.getUser().getLastname())
-                .subjects(teacher.getSubjects().stream()
-                        .map(subject -> SubjectDTO.builder()
-                                .id(subject.getId())
-                                .name(subject.getName())
-                                .coefficient(subject.getCoefficient())
-                                .build())
-                        .collect(Collectors.toList()))
+
                 .schedules(teacher.getSchedules().stream()
                         .map(schedule -> ScheduleDTO.builder()
                                 .id(schedule.getId())
-                                .classeName(schedule.getClasse().getName())
-                                .subjectName(schedule.getSubject().getName())
                                 .dayOfWeek(schedule.getDayOfWeek())
                                 .startTime(schedule.getStartTime())
                                 .endTime(schedule.getEndTime())
                                 .build())
                         .collect(Collectors.toList()))
-                .mainClasses(teacher.getMainClasses().stream()
-                        .map(classe -> ClasseDTO.builder()
-                                .id(classe.getId())
-                                .name(classe.getName())
-                                .level(classe.getLevel())
-                                .build())
-                        .collect(Collectors.toList()))
+
                 .build();
     }
 }

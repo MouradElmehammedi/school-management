@@ -85,15 +85,6 @@ public class SubjectService {
         Subject subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
 
-        // Vérifier si la matière a des notes associées
-        if (!subject.getNotes().isEmpty()) {
-            throw new IllegalStateException("Cannot delete subject with associated notes");
-        }
-
-        // Vérifier si la matière a des emplois du temps associés
-        if (!subject.getSchedules().isEmpty()) {
-            throw new IllegalStateException("Cannot delete subject with associated schedules");
-        }
 
         subjectRepository.delete(subject);
     }
@@ -111,24 +102,7 @@ public class SubjectService {
                                 .lastname(teacher.getUser().getLastname())
                                 .build())
                         .collect(Collectors.toList()))
-                .schedules(subject.getSchedules().stream()
-                        .map(schedule -> ScheduleDTO.builder()
-                                .id(schedule.getId())
-                                .classeName(schedule.getClasse().getName())
-                                .dayOfWeek(schedule.getDayOfWeek())
-                                .startTime(schedule.getStartTime())
-                                .endTime(schedule.getEndTime())
-                                .build())
-                        .collect(Collectors.toList()))
-                .notes(subject.getNotes().stream()
-                        .map(note -> NoteDTO.builder()
-                                .id(note.getId())
-                                .value(note.getValue())
-                                .studentName(note.getStudent().getUser().getFirstname() + " " +
-                                        note.getStudent().getUser().getLastname())
-                                .term(note.getTerm())
-                                .build())
-                        .collect(Collectors.toList()))
+
                 .build();
     }
 }

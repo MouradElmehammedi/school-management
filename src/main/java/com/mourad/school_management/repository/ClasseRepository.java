@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface ClasseRepository extends JpaRepository<Classe, Long> {
     Optional<Classe> findByName(String name);
     List<Classe> findByLevel(String level);
-    List<Classe> findByMainTeacherId(Long teacherId);
+    List<Classe> findByTeacherId(Long teacherId);
+    List<Classe> findByNameContainingIgnoreCase(String name);
+    boolean existsByName(String name);
 }

@@ -2,6 +2,7 @@ package com.mourad.school_management.controller;
 
 import com.mourad.school_management.dto.SubjectDTO;
 import com.mourad.school_management.dto.SubjectResponseDTO;
+import com.mourad.school_management.service.SubjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -7,23 +7,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.security.auth.Subject;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "teachers")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "teachers")
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(nullable = false)
+    private String specialization;
 
     @ManyToMany
     @JoinTable(
@@ -31,8 +34,14 @@ public class Teacher {
             joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
-    private List<Subject> subjects;
+    private Set<Subject> subjects = new HashSet<>();
 
     @OneToMany(mappedBy = "teacher")
-    private List<Schedule> schedules;
+    private Set<Classe> classes = new HashSet<>();
+
+    @OneToMany(mappedBy = "teacher")
+    private Set<Note> notes = new HashSet<>();
+
+    @OneToMany(mappedBy = "teacher")
+    private Set<Schedule> schedules = new HashSet<>();
 }

@@ -1,10 +1,7 @@
 package com.mourad.school_management.service;
 
 
-import com.mourad.school_management.dto.ClasseDTO;
-import com.mourad.school_management.dto.ScheduleDTO;
-import com.mourad.school_management.dto.StudentDTO;
-import com.mourad.school_management.dto.TeacherDTO;
+import com.mourad.school_management.dto.*;
 import com.mourad.school_management.entity.Classe;
 import com.mourad.school_management.entity.Teacher;
 import com.mourad.school_management.repository.ClasseRepository;
@@ -12,7 +9,9 @@ import com.mourad.school_management.repository.TeacherRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +35,7 @@ public class ClasseService {
         Classe classe = Classe.builder()
                 .name(classeDTO.getName())
                 .level(classeDTO.getLevel())
-                .mainTeacher(mainTeacher)
+                .teacher(mainTeacher)
                 .build();
 
         classe = classeRepository.save(classe);
@@ -62,7 +61,7 @@ public class ClasseService {
     }
 
     public List<ClasseResponseDTO> getClassesByTeacher(Long teacherId) {
-        return classeRepository.findByMainTeacherId(teacherId).stream()
+        return classeRepository.findByTeacherId(teacherId).stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
@@ -82,10 +81,10 @@ public class ClasseService {
         classe.setLevel(classeDTO.getLevel());
 
         // Mettre à jour le professeur principal si nécessaire
-        if (!classe.getMainTeacher().getId().equals(classeDTO.getMainTeacherId())) {
+        if (!classe.getTeacher().getId().equals(classeDTO.getMainTeacherId())) {
             Teacher mainTeacher = teacherRepository.findById(classeDTO.getMainTeacherId())
                     .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
-            classe.setMainTeacher(mainTeacher);
+            classe.setTeacher(mainTeacher);
         }
 
         classe = classeRepository.save(classe);
@@ -110,10 +109,10 @@ public class ClasseService {
                 .name(classe.getName())
                 .level(classe.getLevel())
                 .mainTeacher(TeacherDTO.builder()
-                        .id(classe.getMainTeacher().getId())
-                        .email(classe.getMainTeacher().getUser().getEmail())
-                        .firstname(classe.getMainTeacher().getUser().getFirstname())
-                        .lastname(classe.getMainTeacher().getUser().getLastname())
+                        .id(classe.getTeacher().getId())
+                        .email(classe.getTeacher().getUser().getEmail())
+                        .firstname(classe.getTeacher().getUser().getFirstname())
+                        .lastname(classe.getTeacher().getUser().getLastname())
                         .build())
                 .students(classe.getStudents().stream()
                         .map(student -> StudentDTO.builder()
@@ -127,7 +126,6 @@ public class ClasseService {
                 .schedules(classe.getSchedules().stream()
                         .map(schedule -> ScheduleDTO.builder()
                                 .id(schedule.getId())
-                                .subjectName(schedule.getSubject().getName())
                                 .dayOfWeek(schedule.getDayOfWeek())
                                 .startTime(schedule.getStartTime())
                                 .endTime(schedule.getEndTime())
