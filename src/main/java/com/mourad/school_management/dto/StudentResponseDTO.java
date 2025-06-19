@@ -20,6 +20,8 @@ public class StudentResponseDTO {
     private String lastname;
     private String classeName;
     private String parentName;
+    private String phoneNumber;
+    private String address;
     private List<NoteDTO> notes;
     private List<AbsenceDTO> absences;
 }

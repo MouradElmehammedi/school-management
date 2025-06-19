@@ -1,7 +1,9 @@
 package com.mourad.school_management.exception;
 
-public class AuthenticationException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class AuthenticationException extends BaseException {
     public AuthenticationException(String message) {
-        super(message);
+        super(message, HttpStatus.UNAUTHORIZED, "AUTHENTICATION_ERROR");
     }
 }

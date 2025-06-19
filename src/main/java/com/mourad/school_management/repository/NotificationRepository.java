@@ -13,6 +13,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<Notification> findByRecipientId(Long recipientId);
     List<Notification> findByType(NotificationType notificationType);
     List<Notification> findByRecipientIdAndType(Long recipientId, NotificationType type);
-    List<Notification> findByRecipientIdAndReadFalse(Long recipientId);
+    List<Notification> findByRecipientIdAndIsReadFalse(Long recipientId);
     List<Notification> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

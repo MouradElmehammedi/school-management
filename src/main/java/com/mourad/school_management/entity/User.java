@@ -30,16 +30,18 @@ public class User implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    private String firstName;
+    private String firstname;
 
     @Column(nullable = false)
-    private String lastName;
+    private String lastname;
 
-    @Column(nullable = false)
+    @Column
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column
     private String address;
+
+    private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

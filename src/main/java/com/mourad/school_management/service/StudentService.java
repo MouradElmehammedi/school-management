@@ -1,20 +1,18 @@
 package com.mourad.school_management.service;
 
-
 import com.mourad.school_management.dto.AbsenceDTO;
 import com.mourad.school_management.dto.NoteDTO;
 import com.mourad.school_management.dto.StudentDTO;
 import com.mourad.school_management.dto.StudentResponseDTO;
 import com.mourad.school_management.entity.*;
-import com.mourad.school_management.repository.ClasseRepository;
-import com.mourad.school_management.repository.ParentRepository;
-import com.mourad.school_management.repository.StudentRepository;
-import com.mourad.school_management.repository.UserRepository;
+import com.mourad.school_management.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +24,8 @@ public class StudentService {
     private final UserRepository userRepository;
     private final ClasseRepository classeRepository;
     private final ParentRepository parentRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public StudentResponseDTO createStudent(StudentDTO studentDTO) {
         // Vérifier si le matricule existe déjà
@@ -33,12 +33,23 @@ public class StudentService {
             throw new IllegalArgumentException("Matricule already exists");
         }
 
+        // Récupérer le rôle STUDENT
+        List<Role> roles = new ArrayList<>();
+        List<Role> teacherRoles = roleRepository.findByName(Role.RoleName.ROLE_STUDENT);
+        if (teacherRoles.isEmpty()) {
+            throw new EntityNotFoundException("Role STUDENT not found");
+        }
+        roles.add(teacherRoles.get(0));
+
         // Créer l'utilisateur
         User user = User.builder()
                 .email(studentDTO.getEmail())
                 .firstname(studentDTO.getFirstname())
                 .lastname(studentDTO.getLastname())
-                .role(Role.STUDENT)
+                .address(studentDTO.getAddress())
+                .phoneNumber(studentDTO.getPhoneNumber())
+                .password(passwordEncoder.encode("defaultPassword"))
+                .roles(roles)
                 .build();
         user = userRepository.save(user);
 
@@ -87,6 +98,8 @@ public class StudentService {
         user.setEmail(studentDTO.getEmail());
         user.setFirstname(studentDTO.getFirstname());
         user.setLastname(studentDTO.getLastname());
+        user.setAddress(studentDTO.getAddress());
+        user.setPhoneNumber(studentDTO.getPhoneNumber());
         userRepository.save(user);
 
         // Mettre à jour la classe et le parent si nécessaire
@@ -121,6 +134,8 @@ public class StudentService {
                 .email(student.getUser().getEmail())
                 .firstname(student.getUser().getFirstname())
                 .lastname(student.getUser().getLastname())
+                .address(student.getUser().getAddress())
+                .phoneNumber(student.getUser().getPhoneNumber())
                 .classeName(student.getClasse().getName())
                 .parentName(student.getParent().getUser().getFirstname() + " " +
                         student.getParent().getUser().getLastname())

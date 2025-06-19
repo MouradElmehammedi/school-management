@@ -1,6 +1,5 @@
 package com.mourad.school_management.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,16 +19,31 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String message;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private NotificationType type;
+
+    @Column(name = "is_read", nullable = false)
+    private Boolean isRead = false;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "recipient_id")
     private User recipient;
 
-    private LocalDateTime createdAt;
-    private boolean read;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        if (isRead == null) {
+            isRead = false;
+        }
+    }
 }

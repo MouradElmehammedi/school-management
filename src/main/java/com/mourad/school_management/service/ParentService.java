@@ -8,12 +8,14 @@ import com.mourad.school_management.entity.Parent;
 import com.mourad.school_management.entity.Role;
 import com.mourad.school_management.entity.User;
 import com.mourad.school_management.repository.ParentRepository;
+import com.mourad.school_management.repository.RoleRepository;
 import com.mourad.school_management.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ParentService {
     private final ParentRepository parentRepository;
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
     public ParentResponseDTO createParent(ParentDTO parentDTO) {
@@ -30,12 +33,21 @@ public class ParentService {
             throw new IllegalArgumentException("Email already exists");
         }
 
+        List<Role> roles = new ArrayList<>();
+        List<Role> teacherRoles = roleRepository.findByName(Role.RoleName.ROLE_PARENT);
+        if (teacherRoles.isEmpty()) {
+            throw new EntityNotFoundException("Role PARENT not found");
+        }
+        roles.add(teacherRoles.get(0));
+
         // Créer l'utilisateur
         User user = User.builder()
                 .email(parentDTO.getEmail())
                 .firstname(parentDTO.getFirstname())
                 .lastname(parentDTO.getLastname())
-                .role(Role.PARENT)
+                .phoneNumber(parentDTO.getPhoneNumber())
+                .address(parentDTO.getAddress())
+                .roles(roles)
                 .build();
         user = userRepository.save(user);
 
@@ -75,6 +87,8 @@ public class ParentService {
         user.setEmail(parentDTO.getEmail());
         user.setFirstname(parentDTO.getFirstname());
         user.setLastname(parentDTO.getLastname());
+        user.setPhoneNumber(parentDTO.getPhoneNumber());
+        user.setAddress(parentDTO.getAddress());
         userRepository.save(user);
 
         parent = parentRepository.save(parent);
@@ -100,6 +114,8 @@ public class ParentService {
                 .email(parent.getUser().getEmail())
                 .firstname(parent.getUser().getFirstname())
                 .lastname(parent.getUser().getLastname())
+                .phoneNumber(parent.getUser().getPhoneNumber())
+                .address(parent.getUser().getAddress())
                 .children(parent.getChildren().stream()
                         .map(student -> StudentDTO.builder()
                                 .id(student.getId())

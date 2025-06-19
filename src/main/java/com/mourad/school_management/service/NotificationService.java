@@ -34,7 +34,7 @@ public class NotificationService {
                 .message(notificationDTO.getMessage())
                 .type(notificationDTO.getType())
                 .recipient(recipient)
-                .read(false)
+                .isRead(false)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -55,7 +55,7 @@ public class NotificationService {
     }
 
     public List<NotificationResponseDTO> getUnreadNotificationsByRecipient(Long recipientId) {
-        return notificationRepository.findByRecipientIdAndReadFalse(recipientId).stream()
+        return notificationRepository.findByRecipientIdAndIsReadFalse(recipientId).stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
@@ -78,14 +78,14 @@ public class NotificationService {
         Notification notification = notificationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Notification not found"));
 
-        notification.setRead(true);
+        notification.setIsRead(true);
         notification = notificationRepository.save(notification);
         return mapToResponseDTO(notification);
     }
 
     public void markAllAsRead(Long recipientId) {
-        List<Notification> notifications = notificationRepository.findByRecipientIdAndReadFalse(recipientId);
-        notifications.forEach(notification -> notification.setRead(true));
+        List<Notification> notifications = notificationRepository.findByRecipientIdAndIsReadFalse(recipientId);
+        notifications.forEach(notification -> notification.setIsRead(true));
         notificationRepository.saveAll(notifications);
     }
 
@@ -109,7 +109,7 @@ public class NotificationService {
                 .recipientName(notification.getRecipient().getFirstname() + " " +
                         notification.getRecipient().getLastname())
                 .recipientEmail(notification.getRecipient().getEmail())
-                .read(notification.isRead())
+                .isRead(notification.getIsRead())
                 .createdAt(notification.getCreatedAt())
                 .build();
     }

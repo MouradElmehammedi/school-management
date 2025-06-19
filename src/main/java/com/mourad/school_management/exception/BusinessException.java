@@ -1,7 +1,9 @@
 package com.mourad.school_management.exception;
 
-public class BusinessException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class BusinessException extends BaseException {
     public BusinessException(String message) {
-        super(message);
+        super(message, HttpStatus.BAD_REQUEST, "BUSINESS_ERROR");
     }
 }
