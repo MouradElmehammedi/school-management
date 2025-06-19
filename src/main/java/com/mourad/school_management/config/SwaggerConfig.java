@@ -2,9 +2,7 @@ package com.mourad.school_management.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
@@ -25,17 +23,9 @@ public class SwaggerConfig {
                                 "This system provides comprehensive management capabilities for schools including " +
                                 "student management, teacher management, class management, grade management, " +
                                 "attendance tracking, and scheduling.")
-                        .version("1.0.0")
-                        .contact(new Contact()
-                                .name("Mourad")
-                                .email("mourad@school.com")
-                                .url("https://github.com/mourad/school-management"))
-                        .license(new License()
-                                .name("MIT License")
-                                .url("https://opensource.org/licenses/MIT")))
+                        .version("1.0.0"))
                 .servers(List.of(
-                        new Server().url("http://localhost:8080").description("Development server"),
-                        new Server().url("https://api.school-management.com").description("Production server")))
+                        new Server().url("http://localhost:8080").description("Development server")))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components()
                         .addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()));
